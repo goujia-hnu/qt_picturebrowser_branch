@@ -1,0 +1,7 @@
+/Debug/*
+/.vs/*
+/PictureBrowser/GeneratedFiles/*
+/PictureBrowser/x64/*
+/PictureViewKit/GeneratedFiles/*
+/PictureViewKit/x64/*
+/x64/*

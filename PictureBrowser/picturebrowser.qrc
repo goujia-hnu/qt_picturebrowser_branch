@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/PictureBrowser">
+        <file>icons/close.svg</file>
+        <file>icons/mainicon.svg</file>
+        <file>icons/maximize.svg</file>
+        <file>icons/menu.svg</file>
+        <file>icons/minimize.svg</file>
+        <file>icons/minus.svg</file>
+        <file>icons/openfile.svg</file>
+        <file>icons/clipper.svg</file>
+        <file>icons/print.svg</file>
+        <file>icons/saveas.svg</file>
+        <file>icons/insertpicturefromfile.svg</file>
+        <file>icons/exit.svg</file>
+        <file>icons/camera.svg</file>
+        <file>icons/GrabScreenMenu.svg</file>
+    </qresource>
+</RCC>

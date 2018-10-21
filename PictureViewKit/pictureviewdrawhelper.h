@@ -1,7 +1,8 @@
 #pragma once
-#include "stdafx.h"
 #include "pictureviewkit_global.h"
-
+#include "qcolor.h"
+#include "qstring.h"
+#include "qpainterpath.h"
 
 class PICTUREVIEWKIT_EXPORT PictureViewColorMap
 {

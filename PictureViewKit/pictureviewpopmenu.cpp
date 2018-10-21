@@ -83,12 +83,12 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 
 void PictureViewMenuItem::mousePressEvent(QMouseEvent *event)
 {
-	QWidget::mousePressEvent(event);
+	QToolButton::mousePressEvent(event);
 }
 
 void PictureViewMenuItem::mouseReleaseEvent(QMouseEvent *event)
 {
-	QWidget::mouseReleaseEvent(event);
+	QToolButton::mouseReleaseEvent(event);
 }
 
 bool PictureViewMenuItem::isHovered() const

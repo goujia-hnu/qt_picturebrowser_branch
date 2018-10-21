@@ -14,6 +14,8 @@ public:
 	void setTitleContent(QString titleContent);
 	void setTitleWidth(int width);
 	void createPopMenu();
+	void initTitlebar();
+	void initOpenfileMenu();
 
 protected:
 	virtual void paintEvent(QPaintEvent *event);

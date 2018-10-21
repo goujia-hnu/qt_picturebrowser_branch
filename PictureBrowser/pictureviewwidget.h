@@ -13,6 +13,7 @@ public:
 	void changeShowState(BOOL visible);
 	BOOL logoIsVisible();
 	void setTitleBar(TitleBar* titlebar);
+	void initPictureView();
 	void setScaleRatio(float ratio);
 	void setScaleCenter(QPoint& pt);
 	QRect calculateShowRect();

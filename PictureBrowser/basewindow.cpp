@@ -55,6 +55,12 @@ PictureViewWidget* BaseWindow::getPictureViewWidget()
 	return m_pPictureViewWidget;
 }
 
+void BaseWindow::initWindow()
+{
+	m_pTitleBar->initTitlebar();
+	m_pPictureViewWidget->initPictureView();
+}
+
 void BaseWindow::paintEvent(QPaintEvent* event)
 {
 	if (!this->window()->isMaximized())
@@ -70,7 +76,7 @@ void BaseWindow::paintEvent(QPaintEvent* event)
 			color.setAlpha(i * 3);
 			painter.setPen(color);
 			painter.setBrush(Qt::transparent);
-			painter.drawRoundedRect(i, 0, this->width() - i * 2, this->height() - i , 15, 15);
+			painter.drawRoundedRect(i, 0, this->width() - i * 2, this->height() - i , 10, 10);
 		}
 	}
 	else
@@ -183,22 +189,22 @@ void BaseWindow::calRegion(const QPoint& pt)
 	int x = pt.x();
 	int y = pt.y();
 
-	if (tl.x() + PADDING >= x && tl.x() <= x && tl.y() + PADDING >= y && tl.y() <= y)// ×óÉÏ½Ç
+	if ((tl.x() + PADDING) >= x && tl.x() <= x && (tl.y() + PADDING) >= y && tl.y() <= y)// ×óÉÏ½Ç
 	{
 		m_direction = LEFTTOP;
 		this->setCursor(QCursor(Qt::SizeFDiagCursor));
 	}
-	else if (x >= rb.x() - PADDING && x <= rb.x() && y >= rb.y() - PADDING && y <= rb.y())// ÓÒÏÂ½Ç
+	else if (x >= (rb.x() - PADDING) && x <= rb.x() && y >= (rb.y() - PADDING) && y <= rb.y())// ÓÒÏÂ½Ç
 	{
 		m_direction = RIGHTBOTTOM;
 		this->setCursor(QCursor(Qt::SizeFDiagCursor));
 	}
-	else if (x <= tl.x() + PADDING && x >= tl.x() && y >= rb.y() - PADDING && y <= rb.y())//×óÏÂ½Ç
+	else if (x <= (tl.x() + PADDING) && x >= tl.x() && y >= (rb.y() - PADDING) && y <= rb.y())//×óÏÂ½Ç
 	{
 		m_direction = LEFTBOTTOM;
 		this->setCursor(QCursor(Qt::SizeBDiagCursor));
 	}
-	else if (x <= rb.x() && x >= rb.x() - PADDING && y >= tl.y() && y <= tl.y() + PADDING)// ÓÒÉÏ½Ç
+	else if (x <= rb.x() && x >= (rb.x() - PADDING) && y >= tl.y() && y <= (tl.y() + PADDING))// ÓÒÉÏ½Ç
 	{
 		m_direction = RIGHTTOP;
 		this->setCursor(QCursor(Qt::SizeBDiagCursor));

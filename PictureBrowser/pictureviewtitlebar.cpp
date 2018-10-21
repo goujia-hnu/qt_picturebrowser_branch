@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "pictureviewtitlebar.h"
 #include "qsvgrenderer.h"
+#include "application.h"
+#include "basewindow.h"
 
 TitleBar::TitleBar(QWidget *parent)
 	: QWidget(parent)
@@ -172,6 +174,18 @@ void TitleBar::createPopMenu()
 	m_pMenu->insertItem(m_pFilterItem);
 	m_pMenu->insertItem(m_pCameraItem);
 	m_pMenu->insertItem(m_pCloseFileItem);
+}
+
+void TitleBar::initTitlebar()
+{
+	initOpenfileMenu();
+}
+
+void TitleBar::initOpenfileMenu()
+{
+	BaseWindow* pMainwindow = qobject_cast<BaseWindow*>(qApp->mainWidget());
+	PictureViewWidget* pv = pMainwindow->getPictureViewWidget();
+	connect(m_pOpenfileItem, SIGNAL(clicked(bool)), pv, SLOT(onOpenPicture()));
 }
 
 void TitleBar::paintEvent(QPaintEvent *event)

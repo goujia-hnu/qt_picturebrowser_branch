@@ -23,7 +23,7 @@ public:
 	~BaseWindow();
 	TitleBar* getTitleBar();
 	PictureViewWidget* getPictureViewWidget();
-
+	void initWindow();
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

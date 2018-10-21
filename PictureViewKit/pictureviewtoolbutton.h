@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "qpushbutton.h"
 #include "pictureviewkit_global.h"
 
 class PICTUREVIEWKIT_EXPORT PictureViewToolButton :public QPushButton

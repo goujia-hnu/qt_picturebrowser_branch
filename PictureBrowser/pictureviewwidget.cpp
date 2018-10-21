@@ -78,6 +78,11 @@ void PictureViewWidget::setTitleBar(TitleBar* titlebar)
 	m_pTitleBar = titlebar;
 }
 
+void PictureViewWidget::initPictureView()
+{
+
+}
+
 void PictureViewWidget::paintEvent(QPaintEvent *event)
 {
 	QPainter paint(this);

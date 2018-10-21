@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "pictureviewdrawhelper.h"
 
-PictureViewColorMap& PictureViewColorMap::instance()
+PictureViewColorMap* PictureViewColorMap::instance()
 {
 	static PictureViewColorMap colorMap;
-	return colorMap;
+	return &colorMap;
 }
 
 PictureViewColorMap::PictureViewColorMap()
@@ -62,6 +62,6 @@ QPainterPath PictureViewDrawHelper::getBoundPath(const QRect& rect)
 
 QColor PictureViewDrawHelper::getColorFromTheme(const QString& str)
 {
-	PictureViewColorMap colorMap = PictureViewColorMap::instance();
-	return colorMap.findColor(str);
+	PictureViewColorMap *colorMap = PictureViewColorMap::instance();
+	return colorMap->findColor(str);
 }

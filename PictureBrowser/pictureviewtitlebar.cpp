@@ -179,6 +179,7 @@ void TitleBar::createPopMenu()
 void TitleBar::initTitlebar()
 {
 	initOpenfileMenu();
+	initClosefileMenu();
 }
 
 void TitleBar::initOpenfileMenu()
@@ -188,6 +189,13 @@ void TitleBar::initOpenfileMenu()
 	connect(m_pOpenfileItem, SIGNAL(clicked(bool)), pv, SLOT(onOpenPicture()));
 }
 
+void TitleBar::initClosefileMenu()
+{
+	BaseWindow* pMainwindow = qobject_cast<BaseWindow*>(qApp->mainWidget());
+	PictureViewWidget* pv = pMainwindow->getPictureViewWidget();
+	connect(m_pCloseFileItem, SIGNAL(clicked(bool)), pv, SLOT(onCloseFile()));
+}
+
 void TitleBar::paintEvent(QPaintEvent *event)
 {
 	QPainter painter(this);
@@ -195,7 +203,7 @@ void TitleBar::paintEvent(QPaintEvent *event)
 	pathBack.setFillRule(Qt::WindingFill);
 	pathBack.addRect(QRect(0, 0, this->width(), this->height()));
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.fillPath(pathBack, QBrush(TitleBar_BackGround));
+	painter.fillPath(pathBack, QBrush(PictureViewDrawHelper::getColorFromTheme("TitleBar_BackGround")));
 	QWidget::paintEvent(event);
 }
 

@@ -16,6 +16,7 @@ public:
 	void createPopMenu();
 	void initTitlebar();
 	void initOpenfileMenu();
+	void initClosefileMenu();
 
 protected:
 	virtual void paintEvent(QPaintEvent *event);

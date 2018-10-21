@@ -6,7 +6,6 @@
 #define LOGO_SIZE_WIDTH dpiScaled(200)
 #define LOGO_SIZE_HEIGHT dpiScaled(200)
 
-
 PictureViewWidget::PictureViewWidget(QWidget* parent)
 	:QWidget(parent),
 	m_scaleRatio(1.0),
@@ -62,13 +61,13 @@ PictureViewWidget::~PictureViewWidget()
 
 }
 
-void PictureViewWidget::changeShowState(BOOL visible)
+void PictureViewWidget::setDrawLogo(BOOL visible)
 {
 	m_pLogoLabel->setVisible(visible);
 	m_pOpenFile->setVisible(visible);
 }
 
-BOOL PictureViewWidget::logoIsVisible()
+BOOL PictureViewWidget::logoVisible()
 {
 	return m_pLogoLabel->isVisible();
 }
@@ -92,13 +91,13 @@ void PictureViewWidget::paintEvent(QPaintEvent *event)
 	paint.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	paint.fillPath(pathBack, QBrush(Qt::white));
 
-	if (!m_picturePath.isEmpty())
+	if (!m_filePath.isEmpty())
 	{
 		//原始尺寸
-		int x = rect().width() - m_pixmap.width();
-		int y = rect().height() - m_pixmap.height();
-		QRect rc(x / 2, y / 2, m_pixmap.width(), m_pixmap.height());
-		paint.drawPixmap(rc, m_pixmap);
+		int x = rect().width() - m_pixPicture.width();
+		int y = rect().height() - m_pixPicture.height();
+		QRect rc(x / 2, y / 2, m_pixPicture.width(), m_pixPicture.height());
+		paint.drawPixmap(rc, m_pixPicture);
 		//处理缩放
 
 		//处理位移
@@ -112,6 +111,17 @@ void PictureViewWidget::onOpenPicture()
 	selectFile();
 }
 
+void PictureViewWidget::onCloseFile()
+{
+	if (!logoVisible())
+	{
+		setDrawLogo(true);
+		m_filePath.clear();
+		//m_pixmap = QPixmap();
+		this->update();
+	}
+}
+
 void PictureViewWidget::selectFile()
 {
 	QString fileName = QFileDialog::getOpenFileName(
@@ -123,12 +133,12 @@ void PictureViewWidget::selectFile()
 
 	if (!fileName.isEmpty())
 	{ 
-		m_picturePath = fileName;
+		m_filePath = fileName;
 		QFileInfo fileInfo(fileName);
 		m_isSvg = (fileInfo.suffix().toLower() == "svg") ? true : false;
 		if (m_isSvg)
 		{
-			QSvgRenderer renderer(m_picturePath);
+			QSvgRenderer renderer(m_filePath);
 			if (!renderer.isValid())
 				return;
 			QSize size = renderer.defaultSize();
@@ -137,20 +147,17 @@ void PictureViewWidget::selectFile()
 			img.fill(Qt::transparent);
 			QPainter painter(&img);
 			renderer.render(&painter);
-			m_pixmap = img;
+			m_pixPicture = img;
 		}
 		else
 		{
-			/*QPixmap image;
-			image.load(m_picturePath);*/
 			QImage image;
-			image.load(m_picturePath);
-
-			m_pixmap = QPixmap::fromImage(image);
+			image.load(m_filePath);
+			m_pixPicture = QPixmap::fromImage(image);
 		}
 		QString showinfo = " - " + fileInfo.fileName(); //12345看图 - filename - xxx像素,xxMB - 70%
 		m_pTitleBar->setTitleContent(showinfo);			//强制刷新一下
-		changeShowState(false);							//隐藏打开按钮和LOGO	
-		update();
+		this->setDrawLogo(false);							//隐藏打开按钮和LOGO	
+		this->update();
 	}
 }

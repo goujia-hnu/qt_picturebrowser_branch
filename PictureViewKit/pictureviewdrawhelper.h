@@ -7,12 +7,13 @@
 class PICTUREVIEWKIT_EXPORT PictureViewColorMap
 {
 public:
-	static PictureViewColorMap& instance();
-	PictureViewColorMap();
-	~PictureViewColorMap();
+	static PictureViewColorMap* instance();
+	
 	QColor findColor(const QString& str);
 
 private:
+	PictureViewColorMap();
+	~PictureViewColorMap();
 	QMap<QString, QColor> m_colorMap;
 };
 

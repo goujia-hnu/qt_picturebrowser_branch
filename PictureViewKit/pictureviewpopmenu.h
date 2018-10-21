@@ -15,7 +15,6 @@ public:
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
 	QIcon   m_Icon;
@@ -35,6 +34,10 @@ public:
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
+public slots:
+	bool eventFilter(QObject*, QEvent*) Q_DECL_OVERRIDE;
+
 
 private:
 	MenuItems m_pMuneItems;

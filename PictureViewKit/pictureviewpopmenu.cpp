@@ -4,8 +4,8 @@
 PictureViewMenuItem::PictureViewMenuItem(QWidget *parent)
 	:QToolButton(parent)
 {
-	setFixedHeight(25);
-	setFixedWidth(220);
+	setFixedHeight(dpiScaled(25));
+	setFixedWidth(dpiScaled(220));
 }
 
 PictureViewMenuItem::~PictureViewMenuItem()
@@ -50,7 +50,7 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 
 	if (!m_Icon.isNull())
 	{
-		QRect rc(0, 0, 40, 25);
+		QRect rc(0, 0, dpiScaled(40), dpiScaled(25));
 		QSize sz = rc.size() - iconSize();
 		rc.adjust(sz.width() / 2, sz.height() / 2, -sz.width() / 2, -sz.height() / 2);
 		m_Icon.paint(&painter, rc, Qt::AlignCenter, bEnable ? QIcon::Normal : QIcon::Disabled);
@@ -63,7 +63,7 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 		QTextOption option(Qt::AlignLeft | Qt::AlignVCenter);
 		QFont font("Microsoft YaHei", 10);
 		painter.setFont(font);
-		QRect rc(40, 0, 110, 25);
+		QRect rc(dpiScaled(40), 0, dpiScaled(110), dpiScaled(25));
 		painter.setPen(PictureViewDrawHelper::getColorFromTheme("MenuItem_Text"));
 		painter.drawText(rc, m_Text, option);
 		painter.restore();
@@ -75,7 +75,7 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 		QTextOption option(Qt::AlignRight | Qt::AlignVCenter);
 		QFont font("Times New Roman", 10);
 		painter.setFont(font);
-		QRect rc(135, 0, 70, 25);
+		QRect rc(dpiScaled(135), 0, dpiScaled(70), dpiScaled(25));
 		painter.setPen(PictureViewDrawHelper::getColorFromTheme("MenuItem_ShortCut"));
 		painter.drawText(rc, m_shortcut, option);
 	}
@@ -84,11 +84,6 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 void PictureViewMenuItem::mousePressEvent(QMouseEvent *event)
 {
 	QToolButton::mousePressEvent(event);
-}
-
-void PictureViewMenuItem::mouseReleaseEvent(QMouseEvent *event)
-{
-	QToolButton::mouseReleaseEvent(event);
 }
 
 bool PictureViewMenuItem::isHovered() const
@@ -100,13 +95,13 @@ bool PictureViewMenuItem::isHovered() const
 }
 
 
-
-
+//#用ToolButton拼凑起来的Menu
 PictureViewPopMenu::PictureViewPopMenu(QWidget *parent)
 	:QWidget(parent)
 {
 	setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
 	m_pVLayout = new QVBoxLayout(this);
+	this->setMouseTracking(true);
 	m_pVLayout->setMargin(0);
 	m_pVLayout->setSpacing(0);
 	setLayout(m_pVLayout);
@@ -117,13 +112,24 @@ PictureViewPopMenu::~PictureViewPopMenu()
 
 }
 
-void PictureViewPopMenu::insertItem(PictureViewMenuItem* item)
+void PictureViewPopMenu::insertItem(PictureViewMenuItem* pItem)
 {
-	m_pMuneItems.push_front(item);
-	m_pVLayout->addWidget(item);
+	pItem->installEventFilter(this);
+	m_pMuneItems.push_front(pItem);
+	m_pVLayout->addWidget(pItem);
 }
 
 void PictureViewPopMenu::paintEvent(QPaintEvent *event)
 {
 	QWidget::paintEvent(event);
+}
+
+bool PictureViewPopMenu::eventFilter(QObject* watched, QEvent* event)
+{
+	if (event->type() == QEvent::MouseButtonRelease)
+	{
+		this->setVisible(false);
+	}
+
+	return QWidget::eventFilter(watched, event);
 }

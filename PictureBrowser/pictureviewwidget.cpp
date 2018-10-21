@@ -118,6 +118,7 @@ void PictureViewWidget::onCloseFile()
 		setDrawLogo(true);
 		m_filePath.clear();
 		//m_pixmap = QPixmap();
+		m_pTitleBar->setPictureName("");
 		this->update();
 	}
 }
@@ -129,10 +130,19 @@ void PictureViewWidget::selectFile()
 		QStringLiteral("打开图片"),
 		"/",
 		"*.png;*.jpg;*.jpeg;*.bmp;;*.svg"
-	);//只能打开一张图片
-
+	);
+	
 	if (!fileName.isEmpty())
 	{ 
+		QFile qfile(fileName);
+		double iFileSize = qfile.size();
+		int unit = 0;
+		while (iFileSize > 1024)
+		{
+			iFileSize /= 1024;
+			unit++;
+		}
+
 		m_filePath = fileName;
 		QFileInfo fileInfo(fileName);
 		m_isSvg = (fileInfo.suffix().toLower() == "svg") ? true : false;
@@ -155,9 +165,22 @@ void PictureViewWidget::selectFile()
 			image.load(m_filePath);
 			m_pixPicture = QPixmap::fromImage(image);
 		}
-		QString showinfo = " - " + fileInfo.fileName(); //12345看图 - filename - xxx像素,xxMB - 70%
-		m_pTitleBar->setTitleContent(showinfo);			//强制刷新一下
-		this->setDrawLogo(false);							//隐藏打开按钮和LOGO	
+		QSize pixSize = m_pixPicture.size();
+		QString unitStr = "B";
+		if (unit == 1)
+			unitStr = "KB";
+		else if (unit == 2)
+			unitStr = "MB";
+		else if (unit == 3)
+			unitStr = "GB";
+		//12345看图 - filename - xxx像素,xxMB - 70%
+		QString showName = " - " + fileInfo.fileName() +
+			" - " + QString("%1x%2").arg(pixSize.width()).arg(pixSize.height()) +
+			QStringLiteral("像素") + "," + 
+			QString::number(iFileSize, 'f', 2) + unitStr;
+
+		m_pTitleBar->setPictureName(showName);
+		this->setDrawLogo(false);
 		this->update();
 	}
 }

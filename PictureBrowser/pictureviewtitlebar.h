@@ -11,7 +11,7 @@ public:
 	TitleBar(QWidget *parent);
 	~TitleBar();
 	void setTitleIcon(QString filePath, QSize IconSize = QSize(30, 30));
-	void setTitleContent(QString titleContent);
+	void setPictureName(QString name);
 	void setTitleWidth(int width);
 	void createPopMenu();
 	void initTitlebar();
@@ -31,6 +31,7 @@ protected:
 private slots:
 	void onClicked();
 	void showMenu();
+
 private:
 	QLabel* m_pIconLabel;               // 标题栏图标;
 	QLabel* m_pTitleLabel;				// 标题栏内容;

@@ -17,7 +17,6 @@ public:
 	void setScaleRatio(float ratio);
 	void setScaleCenter(QPoint& pt);
 	QRect calculateShowRect();
-	BOOL isSvgPicture();
 
 public slots:
 	void onOpenPicture();

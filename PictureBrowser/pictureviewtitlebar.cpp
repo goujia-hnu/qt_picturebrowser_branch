@@ -102,10 +102,9 @@ void TitleBar::setTitleIcon(QString filePath, QSize IconSize)
 	m_pIconLabel->setPixmap(titleIcon.scaled(IconSize));
 }
 
-void TitleBar::setTitleContent(QString titleContent)
+void TitleBar::setPictureName(QString name)
 {
-	m_pTitleLabel->setText(m_titleContent + titleContent);
-	m_titleContent = titleContent;
+	m_pTitleLabel->setText(m_titleContent + name);
 }
 
 void TitleBar::setTitleWidth(int width)

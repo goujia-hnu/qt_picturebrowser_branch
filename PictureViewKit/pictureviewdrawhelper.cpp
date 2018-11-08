@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "pictureviewdrawhelper.h"
+#include "qsvgrenderer.h"
 
 PictureViewColorMap* PictureViewColorMap::instance()
 {
@@ -64,4 +65,24 @@ QColor PictureViewDrawHelper::getColorFromTheme(const QString& str)
 {
 	PictureViewColorMap *colorMap = PictureViewColorMap::instance();
 	return colorMap->findColor(str);
+}
+
+PICTUREVIEWKIT_EXPORT QIcon PictureViewDrawHelper::LoadIconFromSvg(const QString& fileName, const QSize& size)
+{
+	QSvgRenderer renderer(fileName);
+	QPixmap img(size);
+	img.fill(Qt::transparent);
+	QPainter painter(&img);
+	renderer.render(&painter);
+	return QIcon(img);
+}
+
+PICTUREVIEWKIT_EXPORT QPixmap PictureViewDrawHelper::LoadPixmapFromSvg(const QString& fileName, const QSize& size)
+{
+	QSvgRenderer renderer(fileName);
+	QPixmap img(size);
+	img.fill(Qt::transparent);
+	QPainter painter(&img);
+	renderer.render(&painter);
+	return img;
 }

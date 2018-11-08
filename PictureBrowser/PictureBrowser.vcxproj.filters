@@ -32,13 +32,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="picturebrowser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="basewindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pictureviewwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pictureviewtitlebar.cpp">
@@ -47,12 +41,15 @@
     <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="pictureviewmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pictureview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="picturebrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,13 +57,16 @@
     <QtMoc Include="basewindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="pictureviewwidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="pictureviewtitlebar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="application.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="pictureview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="pictureviewmodel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

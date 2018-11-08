@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "basewindow.h"
-#include "qsvgrenderer.h"
 
 #define PADDING dpiScaled(3)
 
@@ -20,25 +19,22 @@ BaseWindow::BaseWindow(QWidget *parent)
 
 	resize(dpiScaled(800), dpiScaled(500));
 	this->setWindowTitle(QStringLiteral("12345¿´Í¼"));
-	QSvgRenderer renderer(QString("icons/mainicon.svg"));
-	QPixmap img(dpiScaled(20), dpiScaled(20));
-	img.fill(Qt::transparent);
-	QPainter painter(&img);
-	renderer.render(&painter);
-	this->setWindowIcon(QIcon(img));
+	setWindowIcon(PictureViewDrawHelper
+		::LoadIconFromSvg("icons/mainicon.svg", QSize(dpiScaled(20), dpiScaled(20))));
 
-	m_pPictureViewWidget = new PictureViewWidget(this);
-	m_pPictureViewWidget->setObjectName("pictureviewwidget");
-	m_pPictureViewWidget->setMouseTracking(true);
+	m_pPictureView = new PictureView(this);
+	m_pPictureView->setObjectName("pictureview");
+	m_pPictureView->setMouseTracking(true);
+	this->installEventFilter(m_pPictureView);
 
 	m_pLayout = new QVBoxLayout(this);
 	m_pLayout->addWidget(m_pTitleBar);
-	m_pLayout->addWidget(m_pPictureViewWidget);
+	m_pLayout->addWidget(m_pPictureView);
 	m_pLayout->setSpacing(0);
 	m_pLayout->setContentsMargins(0, 0, 0, 0);
 	setLayout(m_pLayout);
 
-	m_pPictureViewWidget->setTitleBar(m_pTitleBar);
+	m_pPictureView->setTitleBar(m_pTitleBar);
 }
 
 BaseWindow::~BaseWindow()
@@ -50,15 +46,15 @@ TitleBar* BaseWindow::getTitleBar()
 	return m_pTitleBar;
 }
 
-PictureViewWidget* BaseWindow::getPictureViewWidget()
+PictureView* BaseWindow::getPictureView()
 {
-	return m_pPictureViewWidget;
+	return m_pPictureView;
 }
 
 void BaseWindow::initWindow()
 {
 	m_pTitleBar->initTitlebar();
-	m_pPictureViewWidget->initPictureView();
+	m_pPictureView->initPictureView();
 }
 
 void BaseWindow::paintEvent(QPaintEvent* event)
@@ -77,6 +73,7 @@ void BaseWindow::paintEvent(QPaintEvent* event)
 			painter.setPen(color);
 			painter.setBrush(Qt::transparent);
 			painter.drawRoundedRect(i, 0, this->width() - i * 2, this->height() - i , 10, 10);
+			//painter.drawRect(i, 0, this->width() - i * 2, this->height() - i);
 		}
 	}
 	else
@@ -192,47 +189,47 @@ void BaseWindow::calRegion(const QPoint& pt)
 	if ((tl.x() + PADDING) >= x && tl.x() <= x && (tl.y() + PADDING) >= y && tl.y() <= y)// ×óÉÏ½Ç
 	{
 		m_direction = LEFTTOP;
-		this->setCursor(QCursor(Qt::SizeFDiagCursor));
+		this->setCursor(Qt::SizeFDiagCursor);
 	}
 	else if (x >= (rb.x() - PADDING) && x <= rb.x() && y >= (rb.y() - PADDING) && y <= rb.y())// ÓÒÏÂ½Ç
 	{
 		m_direction = RIGHTBOTTOM;
-		this->setCursor(QCursor(Qt::SizeFDiagCursor));
+		this->setCursor(Qt::SizeFDiagCursor);
 	}
 	else if (x <= (tl.x() + PADDING) && x >= tl.x() && y >= (rb.y() - PADDING) && y <= rb.y())//×óÏÂ½Ç
 	{
 		m_direction = LEFTBOTTOM;
-		this->setCursor(QCursor(Qt::SizeBDiagCursor));
+		this->setCursor(Qt::SizeBDiagCursor);
 	}
 	else if (x <= rb.x() && x >= (rb.x() - PADDING) && y >= tl.y() && y <= (tl.y() + PADDING))// ÓÒÉÏ½Ç
 	{
 		m_direction = RIGHTTOP;
-		this->setCursor(QCursor(Qt::SizeBDiagCursor));
+		this->setCursor(Qt::SizeBDiagCursor);
 	}
 	else if (x <= tl.x() + PADDING && x >= tl.x())// ×ó±ß
 	{
 		m_direction = LEFT;
-		this->setCursor(QCursor(Qt::SizeHorCursor));
+		this->setCursor(Qt::SizeHorCursor);
 	}
 	else if (x <= rb.x() && x >= rb.x() - PADDING)// ÓÒ±ß
 	{
 		m_direction = RIGHT;
-		this->setCursor(QCursor(Qt::SizeHorCursor));
+		this->setCursor(Qt::SizeHorCursor);
 	}
 	else if (y >= tl.y() && y <= tl.y() + PADDING)// ÉÏ±ß
 	{
 		m_direction = UP;
-		this->setCursor(QCursor(Qt::SizeVerCursor));
+		this->setCursor(Qt::SizeVerCursor);
 	}
 	else if (y <= rb.y() && y >= rb.y() - PADDING)// ÏÂ±ß
 	{
 		m_direction = DOWN;
-		this->setCursor(QCursor(Qt::SizeVerCursor));
+		this->setCursor(Qt::SizeVerCursor);
 	}
 	else// Ä¬ÈÏ
 	{
 		m_direction = NONE;
-		this->setCursor(QCursor(Qt::ArrowCursor));
+		this->setCursor(Qt::ArrowCursor);
 	}
 }
 

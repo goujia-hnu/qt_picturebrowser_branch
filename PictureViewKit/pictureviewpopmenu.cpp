@@ -128,7 +128,7 @@ bool PictureViewPopMenu::eventFilter(QObject* watched, QEvent* event)
 {
 	if (event->type() == QEvent::MouseButtonRelease)
 	{
-		this->setVisible(false);
+		setVisible(false);
 	}
 
 	return QWidget::eventFilter(watched, event);

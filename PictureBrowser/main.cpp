@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "picturebrowser.h"
 #include "basewindow.h"
 #include "application.h"
 

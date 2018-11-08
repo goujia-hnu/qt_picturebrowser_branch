@@ -26,38 +26,28 @@ TitleBar::TitleBar(QWidget *parent)
 	m_pIconLabel->setScaledContents(true);
 	m_pTitleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	QSvgRenderer renderer(QString("icons/menu.svg"));
-	QPixmap img(Button_Height, Button_Height);
-	img.fill(Qt::transparent);
-	QPainter painter(&img);
-	renderer.render(&painter);
 	m_pMenuButton->setContentsMargins(5, 0, 5, 0);
 	m_pMenuButton->setFixedSize(Button_Width, Button_Height);
-	m_pMenuButton->setIcon(QIcon(img));
+	m_pMenuButton->setIcon(PictureViewDrawHelper
+		::LoadIconFromSvg("icons/menu.svg", QSize(Button_Height, Button_Height)));
 	m_pMenuButton->setFlat(true);
 
-	renderer.load(QString("icons/minus.svg"));
-	img.fill(Qt::transparent);
-	renderer.render(&painter);
 	m_pMinimizeButton->setContentsMargins(5, 0, 5, 0);
 	m_pMinimizeButton->setFixedSize(Button_Width, Button_Height);
-	m_pMinimizeButton->setIcon(QIcon(img));
+	m_pMinimizeButton->setIcon(PictureViewDrawHelper
+		::LoadIconFromSvg("icons/minus.svg", QSize(Button_Height, Button_Height)));
 	m_pMinimizeButton->setFlat(true);
 
-	renderer.load(QString("icons/maximize.svg"));
-	img.fill(Qt::transparent);
-	renderer.render(&painter);
 	m_pMaximizeButton->setContentsMargins(5, 0, 5, 0);
 	m_pMaximizeButton->setFixedSize(Button_Width, Button_Height);
-	m_pMaximizeButton->setIcon(QIcon(img));
+	m_pMaximizeButton->setIcon(PictureViewDrawHelper
+		::LoadIconFromSvg("icons/maximize.svg", QSize(Button_Height, Button_Height)));
 	m_pMaximizeButton->setFlat(true);
 
-	renderer.load(QString("icons/close.svg"));
-	img.fill(Qt::transparent);
-	renderer.render(&painter);
 	m_pCloseButton->setContentsMargins(5, 0, 5, 0);
 	m_pCloseButton->setFixedSize(Button_Width, Button_Height);
-	m_pCloseButton->setIcon(QIcon(img));
+	m_pCloseButton->setIcon(PictureViewDrawHelper
+		::LoadIconFromSvg("icons/close.svg", QSize(Button_Height, Button_Height)));
 	m_pCloseButton->setFlat(true);
 
 	m_pTitleLabel->setObjectName("whiteLabel");
@@ -74,7 +64,6 @@ TitleBar::TitleBar(QWidget *parent)
 	pLayout->addWidget(m_pIconLabel);
 	pLayout->addSpacing(2);
 	pLayout->addWidget(m_pTitleLabel);
-
 	pLayout->addWidget(m_pMenuButton);
 	pLayout->addWidget(m_pMinimizeButton);
 	pLayout->addWidget(m_pMaximizeButton);
@@ -184,14 +173,14 @@ void TitleBar::initTitlebar()
 void TitleBar::initOpenfileMenu()
 {
 	BaseWindow* pMainwindow = qobject_cast<BaseWindow*>(qApp->mainWidget());
-	PictureViewWidget* pv = pMainwindow->getPictureViewWidget();
+	PictureView* pv = pMainwindow->getPictureView();
 	connect(m_pOpenfileItem, SIGNAL(clicked(bool)), pv, SLOT(onOpenPicture()));
 }
 
 void TitleBar::initClosefileMenu()
 {
 	BaseWindow* pMainwindow = qobject_cast<BaseWindow*>(qApp->mainWidget());
-	PictureViewWidget* pv = pMainwindow->getPictureViewWidget();
+	PictureView* pv = pMainwindow->getPictureView();
 	connect(m_pCloseFileItem, SIGNAL(clicked(bool)), pv, SLOT(onCloseFile()));
 }
 

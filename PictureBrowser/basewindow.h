@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "pictureviewtitlebar.h"
-#include "pictureviewwidget.h"
+#include "pictureview.h"
 
 class BaseWindow : public QWidget
 {
@@ -22,7 +22,7 @@ public:
 	BaseWindow(QWidget *parent = 0);
 	~BaseWindow();
 	TitleBar* getTitleBar();
-	PictureViewWidget* getPictureViewWidget();
+	PictureView* getPictureView();
 	void initWindow();
 protected:
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -36,7 +36,7 @@ protected:
 
 protected:
 	TitleBar*			m_pTitleBar;
-	PictureViewWidget*	m_pPictureViewWidget;
+	PictureView*		m_pPictureView;
 	bool				m_bLeftPressDown;
 	QPoint				m_pressedPoint;
 	Direction			m_direction;

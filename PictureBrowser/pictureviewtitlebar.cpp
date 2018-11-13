@@ -28,26 +28,22 @@ TitleBar::TitleBar(QWidget *parent)
 
 	m_pMenuButton->setContentsMargins(5, 0, 5, 0);
 	m_pMenuButton->setFixedSize(Button_Width, Button_Height);
-	m_pMenuButton->setIcon(PictureViewDrawHelper
-		::LoadIconFromSvg("icons/menu.svg", QSize(Button_Height, Button_Height)));
+	m_pMenuButton->setIcon(DrawHelper::LoadIconFromSvg("icons/menu.svg", QSize(Button_Height, Button_Height)));
 	m_pMenuButton->setFlat(true);
 
 	m_pMinimizeButton->setContentsMargins(5, 0, 5, 0);
 	m_pMinimizeButton->setFixedSize(Button_Width, Button_Height);
-	m_pMinimizeButton->setIcon(PictureViewDrawHelper
-		::LoadIconFromSvg("icons/minus.svg", QSize(Button_Height, Button_Height)));
+	m_pMinimizeButton->setIcon(DrawHelper::LoadIconFromSvg("icons/minus.svg", QSize(Button_Height, Button_Height)));
 	m_pMinimizeButton->setFlat(true);
 
 	m_pMaximizeButton->setContentsMargins(5, 0, 5, 0);
 	m_pMaximizeButton->setFixedSize(Button_Width, Button_Height);
-	m_pMaximizeButton->setIcon(PictureViewDrawHelper
-		::LoadIconFromSvg("icons/maximize.svg", QSize(Button_Height, Button_Height)));
+	m_pMaximizeButton->setIcon(DrawHelper::LoadIconFromSvg("icons/maximize.svg", QSize(Button_Height, Button_Height)));
 	m_pMaximizeButton->setFlat(true);
 
 	m_pCloseButton->setContentsMargins(5, 0, 5, 0);
 	m_pCloseButton->setFixedSize(Button_Width, Button_Height);
-	m_pCloseButton->setIcon(PictureViewDrawHelper
-		::LoadIconFromSvg("icons/close.svg", QSize(Button_Height, Button_Height)));
+	m_pCloseButton->setIcon(DrawHelper::LoadIconFromSvg("icons/close.svg", QSize(Button_Height, Button_Height)));
 	m_pCloseButton->setFlat(true);
 
 	m_pTitleLabel->setObjectName("whiteLabel");
@@ -152,7 +148,6 @@ void TitleBar::createPopMenu()
 	img.fill(Qt::transparent);
 	renderer.render(&painter);
 	m_pCloseFileItem->initMenuItem(img, QStringLiteral("关闭文件"), QStringLiteral("Ctrl+F4"));
-	//模式识别
 
 	m_pMenu->insertItem(m_pOpenfileItem);
 	m_pMenu->insertItem(m_pSaveFileItem);
@@ -174,7 +169,7 @@ void TitleBar::initOpenfileMenu()
 {
 	BaseWindow* pMainwindow = qobject_cast<BaseWindow*>(qApp->mainWidget());
 	PictureView* pv = pMainwindow->getPictureView();
-	connect(m_pOpenfileItem, SIGNAL(clicked(bool)), pv, SLOT(onOpenPicture()));
+	connect(m_pOpenfileItem, SIGNAL(clicked(bool)), pv, SLOT(onOpenFile()));
 }
 
 void TitleBar::initClosefileMenu()
@@ -191,7 +186,7 @@ void TitleBar::paintEvent(QPaintEvent *event)
 	pathBack.setFillRule(Qt::WindingFill);
 	pathBack.addRect(QRect(0, 0, this->width(), this->height()));
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.fillPath(pathBack, QBrush(PictureViewDrawHelper::getColorFromTheme("TitleBar_BackGround")));
+	painter.fillPath(pathBack, QBrush(DrawHelper::getColorFromTheme("TitleBar_BackGround")));
 	QWidget::paintEvent(event);
 }
 

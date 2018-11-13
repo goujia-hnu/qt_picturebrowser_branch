@@ -7,7 +7,8 @@ class PictureView :public QWidget
 {
 	Q_OBJECT
 public:
-	enum  Type {
+	enum  Type 
+	{
 		None = 0,
 		Amplification,
 		Shrink,
@@ -24,18 +25,22 @@ public:
 	void initPictureView();
 	QRect calculateShowRect();
 	QString fileSize2Str(double size);
+	void updateTitleText();
 
 public slots:
 	bool eventFilter(QObject*, QEvent*) override;
 	void wheelEvent(QWheelEvent* event) override;
-	void onOpenPicture();
+	void onOpenFile();
 	void onCloseFile();
 
 protected:
-	void selectFile();
+	bool selectFile();
 	void paintEvent(QPaintEvent* event) override;
 	bool event(QEvent* event) override;
 	void resizeEvent(QResizeEvent* event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
 	QLabel*						m_pLogoLabel;       //LOGOÍ¼±ê×é¼þ;

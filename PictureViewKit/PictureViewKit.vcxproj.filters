@@ -32,13 +32,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pictureviewdrawhelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pictureviewtoolbutton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pictureviewpopmenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drawhelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,7 +49,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pictureviewdrawhelper.h">
+    <ClInclude Include="drawhelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

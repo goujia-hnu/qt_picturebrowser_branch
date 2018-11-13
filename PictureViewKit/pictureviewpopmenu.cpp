@@ -42,8 +42,8 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 		if (bHover)
 			strProp += "_Hover";
 		painter.save();
-		painter.setPen(PictureViewDrawHelper::getColorFromTheme("MenuItem" + strProp));
-		painter.setBrush(PictureViewDrawHelper::getColorFromTheme("MenuItem" + strProp));
+		painter.setPen(DrawHelper::getColorFromTheme("MenuItem" + strProp));
+		painter.setBrush(DrawHelper::getColorFromTheme("MenuItem" + strProp));
 		painter.drawRect(0, 0, this->width(), this->height());
 		painter.restore();
 	}
@@ -64,7 +64,7 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 		QFont font("Microsoft YaHei", 10);
 		painter.setFont(font);
 		QRect rc(dpiScaled(40), 0, dpiScaled(110), dpiScaled(25));
-		painter.setPen(PictureViewDrawHelper::getColorFromTheme("MenuItem_Text"));
+		painter.setPen(DrawHelper::getColorFromTheme("MenuItem_Text"));
 		painter.drawText(rc, m_Text, option);
 		painter.restore();
 	}
@@ -76,7 +76,7 @@ void PictureViewMenuItem::paintEvent(QPaintEvent *event)
 		QFont font("Times New Roman", 10);
 		painter.setFont(font);
 		QRect rc(dpiScaled(135), 0, dpiScaled(70), dpiScaled(25));
-		painter.setPen(PictureViewDrawHelper::getColorFromTheme("MenuItem_ShortCut"));
+		painter.setPen(DrawHelper::getColorFromTheme("MenuItem_ShortCut"));
 		painter.drawText(rc, m_shortcut, option);
 	}
 }

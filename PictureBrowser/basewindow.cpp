@@ -19,7 +19,7 @@ BaseWindow::BaseWindow(QWidget *parent)
 
 	resize(dpiScaled(800), dpiScaled(500));
 	this->setWindowTitle(QStringLiteral("12345ø¥Õº"));
-	setWindowIcon(PictureViewDrawHelper
+	setWindowIcon(DrawHelper
 		::LoadIconFromSvg("icons/mainicon.svg", QSize(dpiScaled(20), dpiScaled(20))));
 
 	m_pPictureView = new PictureView(this);
@@ -61,20 +61,20 @@ void BaseWindow::paintEvent(QPaintEvent* event)
 {
 	if (!this->window()->isMaximized())
 	{
-		m_pLayout->setContentsMargins(10, 0, 10, 10);
+		//m_pLayout->setContentsMargins(10, 0, 10, 10);
 		int size = 10;                //“ı”∞øÌ∂»
 		QPainter painter(this);
 		painter.setRenderHint(QPainter::Antialiasing);
 
-		QColor color(0, 0, 0, 0);
-		for (int i = 0; i <= size; i++)
-		{
-			color.setAlpha(i * 3);
-			painter.setPen(color);
-			painter.setBrush(Qt::transparent);
-			painter.drawRoundedRect(i, 0, this->width() - i * 2, this->height() - i , 10, 10);
-			//painter.drawRect(i, 0, this->width() - i * 2, this->height() - i);
-		}
+		//QColor color(0, 0, 0, 0);
+		//for (int i = 0; i <= size; i++)
+		//{
+		//	color.setAlpha(i * 3);
+		//	painter.setPen(color);
+		//	painter.setBrush(Qt::transparent);
+		//	painter.drawRoundedRect(i, 0, this->width() - i * 2, this->height() - i , 10, 10);
+		//	//painter.drawRect(i, 0, this->width() - i * 2, this->height() - i);
+		//}
 	}
 	else
 	{

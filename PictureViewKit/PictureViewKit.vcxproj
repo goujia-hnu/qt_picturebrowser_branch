@@ -105,7 +105,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="pictureviewdrawhelper.cpp" />
+    <ClCompile Include="drawhelper.cpp" />
     <ClCompile Include="pictureviewkit.cpp" />
     <ClCompile Include="pictureviewpopmenu.cpp" />
     <ClCompile Include="pictureviewtoolbutton.cpp" />
@@ -115,7 +115,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pictureviewdrawhelper.h" />
+    <ClInclude Include="drawhelper.h" />
     <ClInclude Include="pictureviewkit.h" />
     <ClInclude Include="pictureviewkit_global.h" />
     <QtMoc Include="pictureviewtoolbutton.h" />

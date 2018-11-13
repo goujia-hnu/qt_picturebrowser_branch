@@ -60,8 +60,8 @@ void PictureViewToolButton::paintEvent(QPaintEvent *paintevent)
 			strProp += "_Hover";
 
 		painter.save();
-		painter.setPen(PictureViewDrawHelper::getColorFromTheme("ToolButton" + strProp));
-		painter.setBrush(PictureViewDrawHelper::getColorFromTheme("ToolButton" + strProp));
+		painter.setPen(DrawHelper::getColorFromTheme("ToolButton" + strProp));
+		painter.setBrush(DrawHelper::getColorFromTheme("ToolButton" + strProp));
 		painter.drawRect(0, 0, this->width(), this->height());
 		painter.restore();
 	}

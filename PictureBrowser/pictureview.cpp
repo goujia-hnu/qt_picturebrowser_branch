@@ -16,8 +16,7 @@ PictureView::PictureView(QWidget* parent)
 {
 	m_pLogoLabel = new QLabel(this);
 	m_pLogoLabel->setFixedSize(LOGO_SIZE_WIDTH, LOGO_SIZE_HEIGHT);
-	m_pLogoLabel->setPixmap(PictureViewDrawHelper
-		::LoadPixmapFromSvg("icons/mainicon.svg", QSize(LOGO_SIZE_WIDTH, LOGO_SIZE_HEIGHT)));
+	m_pLogoLabel->setPixmap(DrawHelper::LoadPixmapFromSvg("icons/mainicon.svg", QSize(LOGO_SIZE_WIDTH, LOGO_SIZE_HEIGHT)));
 
 	m_pOpenFileButton = new PictureViewToolButton(this);
 	m_pOpenFileButton->setFixedSize(dpiScaled(170), dpiScaled(45));
@@ -25,7 +24,7 @@ PictureView::PictureView(QWidget* parent)
 	m_pOpenFileButton->setFont(QFont("Microsoft YaHei", dpiScaled(15)));
 	m_pOpenFileButton->setFlat(true);
 	m_pOpenFileButton->setStyleSheet("color:rgb(255, 255, 255)");
-	connect(m_pOpenFileButton, SIGNAL(clicked()), this, SLOT(onOpenPicture()));
+	connect(m_pOpenFileButton, SIGNAL(clicked()), this, SLOT(onOpenFile()));
 
 	m_pVLayout = new QVBoxLayout(this);
 	m_pVLayout->addStretch();
@@ -74,7 +73,7 @@ void PictureView::setTitleBar(TitleBar* titlebar)
 
 void PictureView::initPictureView()
 {
-
+	//https://www.cnblogs.com/lifexy/p/9057046.html
 }
 
 QRect PictureView::calculateShowRect()
@@ -88,12 +87,11 @@ QRect PictureView::calculateShowRect()
 	if (xx < 1.0 || yy < 1.0)
 		ratio = xx > yy ? yy : xx;
 
+	m_scaleRatio = ratio;
 	int x = rect().width() - m_pixPicture.width() * ratio;
 	int y = rect().height() - m_pixPicture.height() * ratio;
 
-	QRect rc(x / 2, y / 2, m_pixPicture.width() * ratio, m_pixPicture.height() * ratio);
-	return rc;
-	//https://www.cnblogs.com/lifexy/p/9057046.html
+	return QRect(x / 2, y / 2, m_pixPicture.width() * ratio, m_pixPicture.height() * ratio);
 }
 
 QString PictureView::fileSize2Str(double fileSize)
@@ -104,6 +102,7 @@ QString PictureView::fileSize2Str(double fileSize)
 		fileSize /= 1024;
 		unit++;
 	}
+
 	QString unitStr = "B";
 	if (unit == 1)
 		unitStr = "KB";
@@ -115,9 +114,18 @@ QString PictureView::fileSize2Str(double fileSize)
 	return QString::number(fileSize, 'f', 2) + unitStr;
 }
 
-bool PictureView::event(QEvent* e)
+
+void PictureView::updateTitleText()
 {
-	return QWidget::event(e);
+	QFileInfo fileInfo(m_filePath);
+	QSize pixSize = m_pixPicture.size();
+	//12345看图 - filename - xxx像素,xxMB - 70%
+	QString showName = " - " + fileInfo.fileName() +
+		" - " + QString("%1x%2").arg(pixSize.width()).arg(pixSize.height()) +
+		QStringLiteral("像素") + "," + fileSize2Str(QFile(m_filePath).size()) +
+		" - " + QString("%1%").arg((int)(m_scaleRatio * 100));
+
+	m_pTitleBar->setPictureName(showName);
 }
 
 void PictureView::paintEvent(QPaintEvent *event)
@@ -147,13 +155,39 @@ void PictureView::paintEvent(QPaintEvent *event)
 
 void PictureView::resizeEvent(QResizeEvent* event)
 {
-	m_paintRect = calculateShowRect();
+	if (m_bOpenedFile)
+	{
+		m_paintRect = calculateShowRect();
+		updateTitleText();
+	}
 	QWidget::resizeEvent(event);
 }
 
-void PictureView::onOpenPicture()
+
+void PictureView::mouseMoveEvent(QMouseEvent *event)
 {
-	selectFile();
+	QWidget::mouseMoveEvent(event);
+}
+
+
+void PictureView::mousePressEvent(QMouseEvent *event)
+{
+	QWidget::mousePressEvent(event);
+}
+
+
+void PictureView::mouseReleaseEvent(QMouseEvent *event)
+{
+	QWidget::mouseReleaseEvent(event);
+}
+
+void PictureView::onOpenFile()
+{
+	bool result = selectFile();
+	if (!result)
+	{
+		qDebug() << "OpenFile Failed!!";
+	}
 }
 
 void PictureView::onCloseFile()
@@ -172,23 +206,77 @@ void PictureView::wheelEvent(QWheelEvent* event)
 {
 	if (event->delta() > 0)//放大
 	{
-		qDebug("This is a debug message.");
+
 	}
 	else//缩小
 	{
-		qDebug("This is a debug message.");
+
 	}
 
 	QWidget::wheelEvent(event);
 }
 
+bool PictureView::event(QEvent* e)
+{
+	//QMouseEvent *mouse = dynamic_cast<QMouseEvent*>(e);
+	////if (mouse)
+	////	qDebug() << "x:" << mouse->pos().x() << " y:" << mouse->pos().y();
+	////qDebug() << "rect() :" << rect().topLeft().x() << " " << rect().topLeft().y() << " " << rect().width() << " " << rect().height();
+	//if (m_bOpenedFile)
+	//{
+	//	if (e->type() == QEvent::MouseButtonPress)
+	//	{
+	//		if (mouse->button() == Qt::LeftButton && m_paintRect.contains(mouse->pos()))
+	//		{
+	//			m_bPicPressed = true;
+	//			setCursor(Qt::ClosedHandCursor);
+	//			m_pressedPoint = mouse->pos();
+	//			return true;
+	//		}
+
+	//	}
+	//	else if (e->type() == QEvent::MouseButtonRelease)
+	//	{
+	//		if (mouse->button() == Qt::LeftButton && m_bPicPressed)
+	//		{
+	//			setCursor(Qt::OpenHandCursor);
+	//			m_bPicPressed = false;
+	//			return true;
+	//		}
+
+	//	}
+	//	else if (e->type() == QEvent::MouseMove)
+	//	{
+	//		if (m_paintRect.contains(mouse->pos()) && m_bPicPressed == false)
+	//			setCursor(Qt::OpenHandCursor);
+	//		else if (m_paintRect.contains(mouse->pos()) == false)
+	//			setCursor(Qt::ArrowCursor);
+
+	//		if (m_paintRect.contains(mouse->pos()) && m_bPicPressed)
+	//		{
+	//			m_xyOffset.setX(mouse->x() - m_pressedPoint.x());
+	//			m_xyOffset.setY(mouse->y() - m_pressedPoint.y());
+	//			m_pressedPoint = mouse->pos();
+	//			m_action = Move;
+	//			update();
+	//		}
+	//		if (m_paintRect.contains(mouse->pos()))
+	//			return true;
+	//	}
+	//}
+	return QWidget::event(e);
+}
+
 bool PictureView::eventFilter(QObject* watched, QEvent* e)
 {
+	QMouseEvent *mouse = dynamic_cast<QMouseEvent*>(e);
+	//if (mouse)
+	//	qDebug() << "x:" << mouse->pos().x() << " y:" << mouse->pos().y();
+	//qDebug() << "rect() :" << rect().topLeft().x() << " " << rect().topLeft().y() << " " << rect().width() << " " << rect().height();
 	if (m_bOpenedFile)
 	{
 		if (e->type() == QEvent::MouseButtonPress)
 		{
-			QMouseEvent *mouse = dynamic_cast<QMouseEvent*>(e);
 			if (mouse->button() == Qt::LeftButton && m_paintRect.contains(mouse->pos()))
 			{
 				m_bPicPressed = true;
@@ -196,23 +284,20 @@ bool PictureView::eventFilter(QObject* watched, QEvent* e)
 				m_pressedPoint = mouse->pos();
 				return true;
 			}
-			
+
 		}
 		else if (e->type() == QEvent::MouseButtonRelease)
 		{
-			QMouseEvent *mouse = dynamic_cast<QMouseEvent*>(e);
 			if (mouse->button() == Qt::LeftButton && m_bPicPressed)
 			{
 				setCursor(Qt::OpenHandCursor);
 				m_bPicPressed = false;
 				return true;
 			}
-			
+
 		}
 		else if (e->type() == QEvent::MouseMove)
 		{
-			QMouseEvent *mouse = dynamic_cast<QMouseEvent*>(e);
-
 			if (m_paintRect.contains(mouse->pos()) && m_bPicPressed == false)
 				setCursor(Qt::OpenHandCursor);
 			else if (m_paintRect.contains(mouse->pos()) == false)
@@ -226,54 +311,48 @@ bool PictureView::eventFilter(QObject* watched, QEvent* e)
 				m_action = Move;
 				update();
 			}
-			if(m_paintRect.contains(mouse->pos()))
+			if (m_paintRect.contains(mouse->pos()))
 				return true;
 		}
 	}
+
 	return QWidget::eventFilter(watched, e);
 }
 
-void PictureView::selectFile()
+bool PictureView::selectFile()
 {
-	QString fileName = QFileDialog::getOpenFileName(
-		this,
-		QStringLiteral("打开图片"),
-		"/",
-		"*.png;*.jpg;*.jpeg;*.bmp;;*.svg");
-	
-	if (!fileName.isEmpty())
-	{ 
-		m_filePath = fileName;
-		QFileInfo fileInfo(fileName);
-		m_isSvg = (fileInfo.suffix().toLower() == "svg") ? true : false;
-		if (m_isSvg)
-		{
-			QSvgRenderer renderer(m_filePath);
-			if (!renderer.isValid())
-				return;
-			QSize size = renderer.defaultSize();
-			QRect viewbox = renderer.viewBox();
-			QPixmap img(size);
-			img.fill(Qt::transparent);
-			QPainter painter(&img);
-			renderer.render(&painter);
-			m_pixPicture = img;
-		}
-		else
-		{
-			QImage image;
-			image.load(m_filePath);
-			m_pixPicture = QPixmap::fromImage(image);
-		}
+	QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("打开图片"), "/",
+		QStringLiteral("所支持的图片类型(*.png;*.jpg;*.jpeg;*.bmp;*.svg);;常见图片文件(*.png;*.jpg;*.jpeg;*.bmp);;矢量图文件(*.svg)"));
 
-		QSize pixSize = m_pixPicture.size();
-		//12345看图 - filename - xxx像素,xxMB - 70%
-		QString showName = " - " + fileInfo.fileName() +
-			" - " + QString("%1x%2").arg(pixSize.width()).arg(pixSize.height()) +
-			QStringLiteral("像素") + "," + fileSize2Str(QFile(fileName).size());
-		m_paintRect = calculateShowRect();
-		m_pTitleBar->setPictureName(showName);
-		this->setShowLogo(false);
-		this->update();
+	if (fileName.isEmpty())
+		return false;
+
+	m_filePath = fileName;
+	QFileInfo fileInfo(fileName);
+	m_isSvg = (fileInfo.suffix().toLower() == "svg") ? true : false;
+	if (m_isSvg)
+	{
+		QSvgRenderer renderer(m_filePath);
+		if (!renderer.isValid())
+			return false;
+		QSize size = renderer.defaultSize();
+		QRect viewbox = renderer.viewBox();
+		QPixmap img(size);
+		img.fill(Qt::transparent);
+		QPainter painter(&img);
+		renderer.render(&painter);
+		m_pixPicture = img;
 	}
+	else
+	{
+		QImage image;
+		image.load(m_filePath);
+		m_pixPicture = QPixmap::fromImage(image);
+	}
+
+	setShowLogo(false);
+	m_paintRect = calculateShowRect();
+	updateTitleText();
+	update();
+	return true;
 }

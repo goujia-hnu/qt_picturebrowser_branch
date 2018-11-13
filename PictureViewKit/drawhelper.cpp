@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "pictureviewdrawhelper.h"
+#include "drawhelper.h"
 #include "qsvgrenderer.h"
 
 PictureViewColorMap* PictureViewColorMap::instance()
@@ -37,7 +37,7 @@ QColor PictureViewColorMap::findColor(const QString& str)
 		return QColor();
 }
 
-QPainterPath PictureViewDrawHelper::getBoundPath(const QRect& rect)
+QPainterPath DrawHelper::getBoundPath(const QRect& rect)
 {
 	int nLeft = rect.left();
 	int nTop = rect.top();
@@ -61,13 +61,13 @@ QPainterPath PictureViewDrawHelper::getBoundPath(const QRect& rect)
 	return path;
 }
 
-QColor PictureViewDrawHelper::getColorFromTheme(const QString& str)
+QColor DrawHelper::getColorFromTheme(const QString& str)
 {
 	PictureViewColorMap *colorMap = PictureViewColorMap::instance();
 	return colorMap->findColor(str);
 }
 
-PICTUREVIEWKIT_EXPORT QIcon PictureViewDrawHelper::LoadIconFromSvg(const QString& fileName, const QSize& size)
+PICTUREVIEWKIT_EXPORT QIcon DrawHelper::LoadIconFromSvg(const QString& fileName, const QSize& size)
 {
 	QSvgRenderer renderer(fileName);
 	QPixmap img(size);
@@ -77,7 +77,7 @@ PICTUREVIEWKIT_EXPORT QIcon PictureViewDrawHelper::LoadIconFromSvg(const QString
 	return QIcon(img);
 }
 
-PICTUREVIEWKIT_EXPORT QPixmap PictureViewDrawHelper::LoadPixmapFromSvg(const QString& fileName, const QSize& size)
+PICTUREVIEWKIT_EXPORT QPixmap DrawHelper::LoadPixmapFromSvg(const QString& fileName, const QSize& size)
 {
 	QSvgRenderer renderer(fileName);
 	QPixmap img(size);

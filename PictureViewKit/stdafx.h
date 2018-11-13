@@ -1,4 +1,4 @@
 #include "QtWidgets"
-#include "pictureviewdrawhelper.h"
+#include "drawhelper.h"
 #include "pictureviewkit_global.h"
 #include "pictureviewkit.h"

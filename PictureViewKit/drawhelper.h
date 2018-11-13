@@ -16,7 +16,7 @@ private:
 	QMap<QString, QColor> m_colorMap;
 };
 
-namespace PictureViewDrawHelper
+namespace DrawHelper
 {
 	PICTUREVIEWKIT_EXPORT QPainterPath getBoundPath(const QRect& rect);
 	PICTUREVIEWKIT_EXPORT QColor getColorFromTheme(const QString& str);
